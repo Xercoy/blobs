@@ -7,7 +7,7 @@ Use Glob to create files of various sizes in bytes, megabytes, gigabytes, and te
 Specify the path, data unit, number of files, and content source:
 
 ```
-glob --unit="MB" --amount=5 --source="default" --dest="./test"
+glob --unit="B" --dest="./" --amount=3 --mode="./"
 ```
 
 ### Flags

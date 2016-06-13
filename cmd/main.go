@@ -1,8 +1,7 @@
 package main
 
 import (
-	"flags"
-	"fmt"
+	"flag"
 	"github.com/xercoy/glob"
 )
 
@@ -10,10 +9,12 @@ func main() {
 	var unit, mode, dest string
 	var amount int
 
-	flags.StringVar(&unit, "MB", "Unit of space for the glob.")
-	flags.StringVar(&mode, "default", "Mode of the file content.")
-	flags.IntVar(&amount, 1, "Number of files to be created.")
-	flags.StringVar(&dest, "./", "Destination of created globs.")
+	flag.StringVar(&unit, "unit", "MB", "Unit of space for the glob.")
+	flag.StringVar(&mode, "mode", "default", "Mode of the file content.")
+	flag.IntVar(&amount, "amount", 1, "Number of files to be created.")
+	flag.StringVar(&dest, "dest", "./", "Destination of created globs.")
+
+	flag.Parse()
 
 	g := glob.NewGlob(unit, mode, amount, dest)
 
