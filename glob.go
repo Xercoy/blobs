@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strconv"
 )
 
 type Glob struct {
@@ -12,6 +13,20 @@ type Glob struct {
 	Amount int
 	Mode   string
 	Dest   string
+}
+
+func (g *Glob) Make() error {
+
+	for i := 1; i <= g.Amount; i++ {
+		fileName := strconv.Itoa(i) + g.Unit
+
+		err := createFile(g.Dest, fileName, g.Unit, g.Mode)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func NewGlob(unit string, mode string, amt int, dest string) *Glob {

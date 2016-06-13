@@ -2,6 +2,7 @@ package glob
 
 import (
 	"os"
+	"strconv"
 	"testing"
 )
 
@@ -71,5 +72,44 @@ func TestValidMode(t *testing.T) {
 
 	if validMode("default") == false {
 		t.Error("Valid destination determined to be invalid.")
+	}
+}
+
+func TestCreateMultipleFiles(t *testing.T) {
+	var err error
+
+	testUnit := "MB"
+	testSource := "default"
+	testAmount := 5
+
+	testGlob := NewGlob(testUnit, testSource, testAmount, testDir)
+
+	err = testGlob.Make()
+	if err != nil {
+
+	}
+
+	for i := 1; i <= testAmount; i++ {
+		fileName := strconv.Itoa(i) + testUnit
+
+		_, err = os.Stat(fileName)
+		if err != nil {
+			t.Errorf("Error retrieving information on %s",
+				fileName)
+		}
+	}
+}
+
+func TestCreateSingleFile(t *testing.T) {
+	var err error
+
+	err = createFile("./", "glob_test_file", "MB", "default")
+	if err != nil {
+		t.Error(err.Error())
+	}
+
+	_, err = os.Stat("./glob_test_file")
+	if err != nil {
+		t.Error(err.Error())
 	}
 }
