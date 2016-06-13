@@ -1,6 +1,7 @@
 package glob
 
 import (
+	"errors"
 	"os"
 	"strconv"
 	"testing"
@@ -111,5 +112,24 @@ func TestCreateSingleFile(t *testing.T) {
 	_, err = os.Stat("./glob_test_file")
 	if err != nil {
 		t.Error(err.Error())
+	}
+}
+
+func TestMake(t *testing.T) {
+	testGlob := NewGlob("MB", "default", 1, testDir)
+	var err error
+
+	if testGlob == nil {
+		t.Error(errors.New("testGlob is nil, it shouldn't be."))
+	}
+
+	err = testGlob.Make()
+	if err != nil {
+		t.Error(err.Error())
+	}
+
+	_, err = os.Stat("1MB")
+	if err != nil {
+		t.Error(errors.New("Error getting information on created file."))
 	}
 }
