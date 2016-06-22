@@ -29,6 +29,12 @@ func (g *Glob) Make() error {
 	return nil
 }
 
+/*
+func Mk(src io.Reader, size, count int, destFormat string) error {
+	buf := make([]byte, 256)
+	io.Copy(buf, src)
+}*/
+
 func NewGlob(unit string, mode string, amt int, dest string) *Glob {
 	g := new(Glob)
 
@@ -75,4 +81,5 @@ func createFile(path string, fileName string, unit string, source string) error 
 	}
 
 	return nil
+
 }
