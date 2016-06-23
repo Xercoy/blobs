@@ -2,9 +2,16 @@ package glob
 
 import (
 	"io"
-	"os/exec"
+	"io/ioutil"
+	"log"
+	"os"
 	"path/filepath"
 	"strconv"
+	"sync"
+)
+
+var (
+	once sync.Once
 )
 
 // Runner contains information related to creating blobs.
@@ -27,10 +34,15 @@ func NewRunner(src io.Reader, dst, unit string, amnt int) *Runner {
 }
 
 func (r *Runner) Mk() error {
+	srcContent, err := ioutil.ReadAll(r.Src)
+	if err != nil {
+		return err
+	}
+
 	for i := 1; i <= r.Amount; i++ {
 		fileName := strconv.Itoa(i) + r.Unit
 
-		err := newCreateFile(r.Src, r.Dest, fileName, r.Unit)
+		err := CreateBlob(srcContent, r.Dest, fileName, r.Unit)
 		if err != nil {
 			return err
 		}
@@ -39,13 +51,38 @@ func (r *Runner) Mk() error {
 	return nil
 }
 
-func newCreateFile(src io.Reader, dst, fileName, unit string) error {
-	cmd := exec.Command("touch", filepath.Join(dst, fileName))
+func CreateBlob(content []byte, dst, fileName, unit string) error {
+	fullBlobPath := filepath.Join(dst, fileName)
 
-	err := cmd.Run()
+	// Create a new file.
+	newFile, err := createBlobFile(fullBlobPath)
+	if err != nil {
+		return err
+	}
+	defer newFile.Close()
+
+	// Fill it with junk.
+	err = fillFile(newFile, content)
 	if err != nil {
 		return err
 	}
 
 	return nil
+}
+
+// should be the new create file, need to rename.
+func createBlobFile(src string) (*os.File, error) {
+	return os.Create(src)
+}
+
+func fillFile(file *os.File, content []byte) error {
+
+	bytesWritten, err := file.Write(content)
+	if err != nil {
+		return err
+	}
+
+	log.Printf("%d bytes written to file.", bytesWritten)
+
+	return err
 }
