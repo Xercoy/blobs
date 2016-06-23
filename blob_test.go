@@ -6,7 +6,7 @@ import (
 )
 
 func TestNewRunner(t *testing.T) {
-	testRunner := NewRunner(os.Stdin, "./", "MB", 5)
+	testRunner := NewRunner(os.Stdin, "./", "MB", 5, "%d.dat")
 
 	if testRunner.Amount != 5 {
 		t.Error("Given amount not equal to actual amount.")

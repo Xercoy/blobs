@@ -1,5 +1,13 @@
 package glob
 
+import (
+	"os"
+)
+
+func createBlobFile(src string) (*os.File, error) {
+	return os.Create(src)
+}
+
 func validUnit(unit string) bool {
 	switch unit {
 	case "B":
