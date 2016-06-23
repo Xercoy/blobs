@@ -16,9 +16,7 @@ type Runner struct {
 	Amount    int
 	Unit      string
 	FormatStr string
-
-	//temp
-	Content []byte
+	Content   []byte
 }
 
 func NewRunner(src io.Reader, dst, unit, fmtStr string, amnt int) *Runner {
@@ -76,21 +74,29 @@ func (r *Runner) createBlob(fileName string) error {
 
 func (r *Runner) fillFile(file *os.File) error {
 	remainingBytes := BytesInUnit(r.Unit)
-	var endIndex int
 	var contentSize = len(r.Content)
+	var endIndex int
 
 	for {
+		// Exit condition
 		if remainingBytes == 0 {
 			break
 		}
 
+		// If content is lesser in size than remaining bytes,
+		// write all of the content to the file..
 		if contentSize <= remainingBytes {
 			endIndex = contentSize
 
+			// If the content is larger in size than remaining bytes,
+			// ensure that only the length of the remaining bytes are
+			// copied from content.
 		} else if contentSize >= remainingBytes {
 			endIndex = remainingBytes
 		}
 
+		// Write the content to the file, subtract the number of
+		// bytes written from the total of remainingBytes.
 		bytesWritten, err := file.Write(r.Content[0:endIndex])
 		if err != nil {
 			return err

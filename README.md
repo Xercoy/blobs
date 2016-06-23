@@ -1,6 +1,6 @@
-# Blob - Generate files of various sizes.
+# Blobs - Generate files of various sizes.
 
-Use Blob to create files of various sizes in bytes, megabytes, gigabytes, and terabytes.
+Use Blobs to create files of various sizes in bytes, megabytes, gigabytes, and terabytes.
 
 # Usage
 
