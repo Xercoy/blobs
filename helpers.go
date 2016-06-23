@@ -26,3 +26,22 @@ func validMode(source string) bool {
 
 	return false
 }
+
+// Maybe return error?
+func BytesInUnit(unit string) int {
+	var byteAmount int
+	switch unit {
+	case "B":
+		byteAmount = 1
+	case "KB":
+		byteAmount = 1024
+	case "MB":
+		byteAmount = 1048576
+	case "GB":
+		byteAmount = 1073741824
+	case "TB":
+		byteAmount = 1099511627776
+	}
+
+	return byteAmount
+}
