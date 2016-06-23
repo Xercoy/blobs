@@ -1,6 +1,6 @@
-# Glob - Generate files of various sizes.
+# Blob - Generate files of various sizes.
 
-Use Glob to create files of various sizes in bytes, megabytes, gigabytes, and terabytes.
+Use Blob to create files of various sizes in bytes, megabytes, gigabytes, and terabytes.
 
 # Usage
 
