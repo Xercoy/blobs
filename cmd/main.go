@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"github.com/xercoy/glob2"
+	"github.com/xercoy/blobs"
 	"os"
 )
 
@@ -17,9 +17,9 @@ func main() {
 
 	flag.Parse()
 
-	runner := glob.NewRunner(os.Stdin, dest, unit, fmtStr, amount)
+	runner := blobs.NewRunner(os.Stdin, dest, unit, fmtStr, amount)
 
-	err := runner.Mk()
+	err := blobs.Mk(runner)
 	if err != nil {
 		panic(err.Error())
 	}

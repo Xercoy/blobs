@@ -1,7 +1,8 @@
-package glob
+package blobs
 
 import (
 	"fmt"
+	"github.com/dustin/go-humanize"
 	"io"
 	"io/ioutil"
 	"log"
@@ -31,7 +32,7 @@ func NewRunner(src io.Reader, dst, unit, fmtStr string, amnt int) *Runner {
 	return r
 }
 
-func (r *Runner) Mk() error {
+func Mk(r *Runner) error {
 	// Error handling and detection should be done here.
 
 	srcContent, err := ioutil.ReadAll(r.Src)
@@ -41,9 +42,10 @@ func (r *Runner) Mk() error {
 	r.Content = srcContent
 
 	for i := 1; i <= r.Amount; i++ {
-		log.Printf("Starting file %d...\n", i)
+		fileName := fmt.Sprintf(r.FormatStr, i)
+		log.Printf("Creating file #%d, (%s)...\n", i, fileName)
 
-		err := r.createBlob(fmt.Sprintf(r.FormatStr, i))
+		err := r.createBlob(fileName)
 		if err != nil {
 			return err
 		}
@@ -73,13 +75,25 @@ func (r *Runner) createBlob(fileName string) error {
 }
 
 func (r *Runner) fillFile(file *os.File) error {
-	remainingBytes := BytesInUnit(r.Unit)
-	var contentSize = len(r.Content)
-	var endIndex int
+
+	// Func returns the number of bytes of the string unit of type big.Int.
+	bPtr, err := humanize.ParseBigBytes(r.Unit)
+	if err != nil {
+		return err
+	}
+
+	// Dereference the ptr, retrieve int64 value
+	remainingBytes := (*bPtr).Int64()
+
+	// Number of bytes of the content to be written.
+	var contentSize = int64(len(r.Content))
+
+	// Denotes the index of the end of the content to be written to.
+	var endIndex int64
 
 	for {
-		// Exit condition
-		if remainingBytes == 0 {
+		// Exit condition, no more bytes to write.
+		if remainingBytes == int64(0) {
 			break
 		}
 
@@ -95,14 +109,14 @@ func (r *Runner) fillFile(file *os.File) error {
 			endIndex = remainingBytes
 		}
 
-		// Write the content to the file, subtract the number of
+		// Write the content to the file and subtract the number of
 		// bytes written from the total of remainingBytes.
 		bytesWritten, err := file.Write(r.Content[0:endIndex])
 		if err != nil {
 			return err
 		}
 
-		remainingBytes -= bytesWritten
+		remainingBytes -= int64(bytesWritten)
 	}
 
 	return nil

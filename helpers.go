@@ -1,4 +1,4 @@
-package glob
+package blobs
 
 import (
 	"os"
