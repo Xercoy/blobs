@@ -4,21 +4,23 @@ Use Glob to create files of various sizes in bytes, megabytes, gigabytes, and te
 
 # Usage
 
-Specify the path, data unit, number of files, and content source:
+Specify the content of the blob via stdin.
 
+Provide the data unit (unit), number of files (amount), and destination (dest):
 ```
-glob --unit="B" --dest="./" --amount=3 --mode="./"
+echo "foobar" | go run main.go --unit="MB" --amount=2 --dest="./tmp"
 ```
 
 ### Flags
 
-Existing:
+`unit` -  string flag, the unit of data to be created. Valid values are MB, GB, TB, KB, and B. Case sensitive for now.
 
-- Unit of space (B, MB, GB, TB)
-- Number of files
-- current directory
+`amount` - An integer flag of the number of files to be created.
 
-Future:
+`dest` - A string flag, the directory path of the output.
 
-- Content of file (urandom, uzero, custom)
-- Increment
+### TODO
+
+- Tests, tests, and more tests
+- Error checking and handling
+- Improved configuration parsing
