@@ -20,6 +20,8 @@ type Runner struct {
 	Content   []byte
 }
 
+// NewRunner returns a pointer to a Runner and initializes most of the fields
+// with the given args.
 func NewRunner(src io.Reader, dst, unit, fmtStr string, amnt int) *Runner {
 	r := new(Runner)
 
@@ -32,6 +34,7 @@ func NewRunner(src io.Reader, dst, unit, fmtStr string, amnt int) *Runner {
 	return r
 }
 
+// Mk receives an instance of a Runner and creates blobs based on its attributes.
 func Mk(r *Runner) error {
 	// Error handling and detection should be done here.
 
@@ -54,6 +57,8 @@ func Mk(r *Runner) error {
 	return nil
 }
 
+// createBlob creates the a blob with a given string and then writes to the file
+// accordingly.
 func (r *Runner) createBlob(fileName string) error {
 
 	// Create a new file.
@@ -74,6 +79,9 @@ func (r *Runner) createBlob(fileName string) error {
 	return nil
 }
 
+// fillBlob receives a pointer to a file which the function will write to.
+// Specifications on what to write and how many bytes to write come from the
+// Runner instance.
 func (r *Runner) fillBlob(file *os.File) error {
 
 	// Func returns the number of bytes of the string unit of type big.Int.
@@ -120,4 +128,28 @@ func (r *Runner) fillBlob(file *os.File) error {
 	}
 
 	return nil
+}
+
+// createBlobFile creates a file at the specified path.
+func createBlobFile(fullPath string) (*os.File, error) {
+	return os.Create(fullPath)
+}
+
+// Unused, leaving this here because the humanized pkg is still new to me.
+func bytesInUnit(unit string) int {
+	var byteAmount int
+	switch unit {
+	case "B":
+		byteAmount = 1
+	case "KB":
+		byteAmount = 1024
+	case "MB":
+		byteAmount = 1048576
+	case "GB":
+		byteAmount = 1073741824
+	case "TB":
+		byteAmount = 1099511627776
+	}
+
+	return byteAmount
 }
