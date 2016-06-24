@@ -43,7 +43,7 @@ func Mk(r *Runner) error {
 
 	for i := 1; i <= r.Amount; i++ {
 		fileName := fmt.Sprintf(r.FormatStr, i)
-		log.Printf("Creating file #%d, (%s)...\n", i, fileName)
+		log.Printf("Creating file #%d (%s)...\n", i, fileName)
 
 		err := r.createBlob(fileName)
 		if err != nil {
@@ -66,7 +66,7 @@ func (r *Runner) createBlob(fileName string) error {
 	defer newFile.Close()
 
 	// Fill it up!
-	err = r.fillFile(newFile)
+	err = r.fillBlob(newFile)
 	if err != nil {
 		return err
 	}
@@ -74,7 +74,7 @@ func (r *Runner) createBlob(fileName string) error {
 	return nil
 }
 
-func (r *Runner) fillFile(file *os.File) error {
+func (r *Runner) fillBlob(file *os.File) error {
 
 	// Func returns the number of bytes of the string unit of type big.Int.
 	bPtr, err := humanize.ParseBigBytes(r.Unit)
