@@ -16,9 +16,24 @@ var (
 	tempDir = os.TempDir()
 )
 
+func TestCreateRandomAmount(t *testing.T) {
+	log.Println("\n\nStarting TestCreateRandomAmount...")
+
+	contentSrc := strings.NewReader("icecream")
+
+	testRunner := blobs.NewRunner(contentSrc, tempDir, "1MB", "%d.dat", 15, true)
+
+	err := blobs.Mk(testRunner)
+	if err != nil {
+		t.Error(err.Error())
+	}
+}
+
 func TestNewRunner(t *testing.T) {
+	log.Println("\n\nStarting TestNewRunner...")
+
 	testReader := strings.NewReader("foobarbaz")
-	testRunner := blobs.NewRunner(testReader, tempDir, "2MB", "%d.dat", 3)
+	testRunner := blobs.NewRunner(testReader, tempDir, "2MB", "%d.dat", 3, false)
 
 	fmtString := "Given Runner field %s not equal to the given test value."
 	var value string
@@ -52,8 +67,10 @@ func TestNewRunner(t *testing.T) {
 }
 
 func TestMk(t *testing.T) {
+	log.Println("\n\nStarting TestMk...")
+
 	testReader := strings.NewReader("helloWorld")
-	testRunner := blobs.NewRunner(testReader, tempDir, "2MB", "%d.dat", 5)
+	testRunner := blobs.NewRunner(testReader, tempDir, "2MB", "%d.dat", 5, false)
 
 	err := blobs.Mk(testRunner)
 	if err != nil {

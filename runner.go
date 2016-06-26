@@ -6,8 +6,10 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 // Runner contains information related to creating blobs.
@@ -18,11 +20,12 @@ type Runner struct {
 	Unit      string
 	FormatStr string
 	Content   []byte
+	Random    bool
 }
 
 // NewRunner returns a pointer to a Runner and initializes most of the fields
 // with the given args.
-func NewRunner(src io.Reader, dst, unit, fmtStr string, amnt int) *Runner {
+func NewRunner(src io.Reader, dst, unit, fmtStr string, amnt int, random bool) *Runner {
 	r := new(Runner)
 
 	r.Src = src
@@ -30,6 +33,7 @@ func NewRunner(src io.Reader, dst, unit, fmtStr string, amnt int) *Runner {
 	r.Amount = amnt
 	r.Unit = unit
 	r.FormatStr = fmtStr
+	r.Random = random
 
 	return r
 }
@@ -44,9 +48,25 @@ func Mk(r *Runner) error {
 	}
 	r.Content = srcContent
 
-	for i := 1; i <= r.Amount; i++ {
+	var amount int
+	if r.Random == true {
+		//randomizer := rand.New(rand.NewSource((int64)(amount)))
+		seed := time.Now().UnixNano()
+
+		log.Printf("Seed value is %v.\n", seed)
+
+		randomizer := rand.New(rand.NewSource(seed))
+
+		amount = randomizer.Intn(r.Amount)
+
+		log.Printf("Random flag set, creating %d random files.\n", amount)
+	} else {
+		amount = r.Amount
+	}
+
+	for i := 1; i <= amount; i++ {
 		fileName := fmt.Sprintf(r.FormatStr, i)
-		log.Printf("Creating file #%d (%s)...\n", i, fileName)
+		log.Printf("Creating file #%d of %d (%s)...\n", i, amount, fileName)
 
 		err := r.createBlob(fileName)
 		if err != nil {
@@ -133,23 +153,4 @@ func (r *Runner) fillBlob(file *os.File) error {
 // createBlobFile creates a file at the specified path.
 func createBlobFile(fullPath string) (*os.File, error) {
 	return os.Create(fullPath)
-}
-
-// Unused, leaving this here because the humanized pkg is still new to me.
-func bytesInUnit(unit string) int {
-	var byteAmount int
-	switch unit {
-	case "B":
-		byteAmount = 1
-	case "KB":
-		byteAmount = 1024
-	case "MB":
-		byteAmount = 1048576
-	case "GB":
-		byteAmount = 1073741824
-	case "TB":
-		byteAmount = 1099511627776
-	}
-
-	return byteAmount
 }
