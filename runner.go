@@ -64,6 +64,9 @@ func Mk(r *Runner) error {
 		amount = r.Amount
 	}
 
+	log.Printf("Creating blobs.")
+	startTime := time.Now()
+
 	for i := 1; i <= amount; i++ {
 		fileName := fmt.Sprintf(r.FormatStr, i)
 		log.Printf("Creating file #%d of %d (%s)...\n", i, amount, fileName)
@@ -73,6 +76,11 @@ func Mk(r *Runner) error {
 			return err
 		}
 	}
+
+	endTime := time.Now()
+
+	totalRuntime := endTime.Sub(startTime)
+	log.Printf("Blob creation finished in %s seconds.", totalRuntime.String())
 
 	return nil
 }
