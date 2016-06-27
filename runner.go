@@ -1,6 +1,7 @@
 package blobs
 
 import (
+	"errors"
 	"fmt"
 	"github.com/dustin/go-humanize"
 	"io"
@@ -9,6 +10,7 @@ import (
 	"math/rand"
 	"os"
 	"path/filepath"
+	"sync"
 	"time"
 )
 
@@ -41,40 +43,48 @@ func NewRunner(src io.Reader, dst, unit, fmtStr string, amnt int, random bool) *
 // Mk receives an instance of a Runner and creates blobs based on its attributes.
 func Mk(r *Runner) error {
 	// Error handling and detection should be done here.
-
 	srcContent, err := ioutil.ReadAll(r.Src)
 	if err != nil {
 		return err
 	}
 	r.Content = srcContent
 
-	var amount int
-	if r.Random == true {
-		//randomizer := rand.New(rand.NewSource((int64)(amount)))
-		seed := time.Now().UnixNano()
-
-		log.Printf("Seed value is %v.\n", seed)
-
-		randomizer := rand.New(rand.NewSource(seed))
-
-		amount = randomizer.Intn(r.Amount)
-
-		log.Printf("Random flag set, creating %d random files.\n", amount)
-	} else {
-		amount = r.Amount
-	}
+	amount := r.setBlobAmount()
 
 	log.Printf("Creating blobs.")
 	startTime := time.Now()
 
-	for i := 1; i <= amount; i++ {
-		fileName := fmt.Sprintf(r.FormatStr, i)
-		log.Printf("Creating file #%d of %d (%s)...\n", i, amount, fileName)
+	var wg sync.WaitGroup
+	var doneChan = make(chan int)
+	var errChan = make(chan error)
 
-		err := r.createBlob(fileName)
-		if err != nil {
-			return err
-		}
+	for i := 1; i <= amount; i++ {
+		wg.Add(1)
+
+		fileName := fmt.Sprintf(r.FormatStr, i)
+		index := i
+
+		go func() {
+			log.Printf("Creating file #%d of %d (%s)...\n", index, amount, fileName)
+			err := r.createBlob(fileName)
+			if err != nil {
+				err = errors.New("eofihefihsd")
+				errChan <- err
+			}
+
+			defer wg.Done()
+		}()
+	}
+
+	go func() {
+		wg.Wait()
+		close(doneChan)
+	}()
+
+	select {
+	case err = <-errChan:
+		return err
+	case <-doneChan:
 	}
 
 	endTime := time.Now()
@@ -161,4 +171,25 @@ func (r *Runner) fillBlob(file *os.File) error {
 // createBlobFile creates a file at the specified path.
 func createBlobFile(fullPath string) (*os.File, error) {
 	return os.Create(fullPath)
+}
+
+func (r *Runner) setBlobAmount() int {
+	var amount int
+
+	if r.Random == true {
+		//randomizer := rand.New(rand.NewSource((int64)(amount)))
+		seed := time.Now().UnixNano()
+
+		log.Printf("Seed value is %v.\n", seed)
+
+		randomizer := rand.New(rand.NewSource(seed))
+
+		amount = randomizer.Intn(r.Amount)
+
+		log.Printf("Random flag set, creating %d random files.\n", amount)
+	} else {
+		amount = r.Amount
+	}
+
+	return amount
 }
