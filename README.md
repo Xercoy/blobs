@@ -1,4 +1,4 @@
-# Blobs - Generate files of various sizes.
+# Blobs - Generate files of various sizes. [![Build Status](https://travis-ci.org/Xercoy/blobs.svg?branch=master)](https://travis-ci.org/Xercoy/blobs)
 
 Use Blobs to create files of various sizes in bytes, megabytes, gigabytes, and terabytes.
 
