@@ -1,8 +1,9 @@
-package blobs_test
+package blobs
 
 import (
 	"fmt"
-	"github.com/xercoy/blobs"
+
+	//	"github.com/xercoy/blobs"
 	"io/ioutil"
 	"log"
 	"os"
@@ -21,9 +22,9 @@ func TestCreateRandomAmount(t *testing.T) {
 
 	contentSrc := strings.NewReader("icecream")
 
-	testRunner := blobs.NewRunner(contentSrc, tempDir, "1MB", "%d.dat", 15, true)
+	testRunner := NewRunner(contentSrc, tempDir, "1MB", "%d.dat", 15, true)
 
-	err := blobs.Mk(testRunner)
+	err := Mk(testRunner)
 	if err != nil {
 		t.Error(err.Error())
 	}
@@ -33,7 +34,7 @@ func TestNewRunner(t *testing.T) {
 	log.Println("\n\nStarting TestNewRunner...")
 
 	testReader := strings.NewReader("foobarbaz")
-	testRunner := blobs.NewRunner(testReader, tempDir, "2MB", "%d.dat", 3, false)
+	testRunner := NewRunner(testReader, tempDir, "2MB", "%d.dat", 3, false)
 
 	fmtString := "Given Runner field %s not equal to the given test value."
 	var value string
@@ -70,9 +71,9 @@ func TestMk(t *testing.T) {
 	log.Println("\n\nStarting TestMk...")
 
 	testReader := strings.NewReader("helloWorld")
-	testRunner := blobs.NewRunner(testReader, tempDir, "2MB", "%d.dat", 5, false)
+	testRunner := NewRunner(testReader, tempDir, "2MB", "%d.dat", 5, false)
 
-	err := blobs.Mk(testRunner)
+	err := Mk(testRunner)
 	if err != nil {
 		t.Error(err.Error())
 	}
