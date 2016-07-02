@@ -7,27 +7,30 @@
 [![Coverage Status](https://coveralls.io/repos/github/Xercoy/blobs/badge.svg?branch=master)](https://coveralls.io/github/Xercoy/blobs?branch=master)
 [![Gitter](https://badges.gitter.im/Xercoy/blobs.svg)](https://gitter.im/Xercoy/blobs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
+===
 
 Use Blobs to create files of various sizes in bytes, megabytes, gigabytes, and terabytes.
 
 # Usage
-
-Specify the content of the blob via stdin.
-
-Provide the data unit (unit), number of files (amount), destination (dest), and the file name format (o):
 ```
-echo "foobar" | go run main.go --unit="MB" --amount=2 --dest="./tmp" --o="FILE_%d.dat"
+Blobs 1.0
+
+ Usage: blobs <options> <options>...
+  -amount int
+    	Number of files to be created. (default 1)
+  -dest string
+    	Destination of created globs. (default "./")
+  -help
+    	Displays flag attributes & usage information.
+  -o string
+    	Format specifier for blob file name. %d is for the number sequence of the file. (default "%d.dat")
+  -random
+    	Random number of blobs ranging from 1 to the value of the amount flag.
+  -unit string
+    	Unit of space for the glob. (default "MB")
 ```
 
-### Flags
-
-`unit` -  string flag, the unit of data to be created. Valid values are MB, GB, TB, KB, and B. Case sensitive for now. Default = "MB"
-
-`amount` - An integer flag of the number of files to be created. Default = 1
-
-`dest` - A string flag, the directory path of the output. Default = "./"
-
-`o` - A string flag to specify the file name format. The %d format specifier will denote the number sequence of the file. Default = "%d.dat"
+# Sample Usage
 
 ### TODO
 
