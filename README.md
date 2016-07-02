@@ -1,3 +1,5 @@
+![https://github.com/xercoy/blobs](blobs-logo.png)
+
 # Blobs - Generate files of various sizes.
 
 [![Build Status](https://travis-ci.org/Xercoy/blobs.svg?branch=master)](https://travis-ci.org/Xercoy/blobs)
