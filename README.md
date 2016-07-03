@@ -1,6 +1,6 @@
 ![https://github.com/xercoy/blobs](blobs-logo.png)
 
-# Blobs - Generate files of various sizes.
+# Blobs - Generate files of various size and content. Compatible with Go 1.6 and newer.
 
 [![Build Status](https://travis-ci.org/Xercoy/blobs.svg?branch=master)](https://travis-ci.org/Xercoy/blobs)
 [![GoDoc](https://godoc.org/github.com/xercoy/blobs?status.png)](http://godoc.org/github.com/xercoy/blobs)
@@ -55,7 +55,9 @@ Blobs 1.0
 
 ### Caveats
 
-Stdin will halt if the input type is set to "stdin" while there is nothing being piped. It will instead assume that there is data coming from the terminal, rather than being piped. This fix is on the roadmap.
+Comatability - This package is compatible with Go 1.6 onwards. There is a method in the math/rand package (rand.Read()) which is used as part of creating randomized blob content.
+
+Stdin - Stdin will halt if the input type is set to "stdin" while there is nothing being piped. It will instead assume that there is data coming from the terminal, rather than being piped. This fix is on the roadmap.
 
 ### TODOs
 
