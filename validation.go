@@ -26,11 +26,12 @@ func (r *Runner) validateFields() error {
 		return errors.New(fmt.Sprintf("dest field invalid: %v", err))
 	}
 
+	/* Don't handle stdin yet
 	if r.InputType == "stdin" {
 		if stdinEmpty(r) {
 			return errors.New("Nothing to read from Src.")
 		}
-	}
+	}*/
 
 	return nil
 }

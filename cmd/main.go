@@ -22,7 +22,6 @@ func main() {
 	flag.StringVar(&inputType, "input-type", "zero", "Specifies input type of blob content. stdin = stdin, random = random characters, zero = zero characters.")
 
 	flag.Parse()
-	//	flag.CommandLine.SetOutput(os.Stdout)
 
 	if help {
 		fmt.Println("Blobs 1.0\n\n Usage: blobs <options> <options>...")
@@ -36,4 +35,6 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	log.Printf("FORMAT STR IS %s", fmtStr)
 }
