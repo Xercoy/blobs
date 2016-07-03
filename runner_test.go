@@ -22,7 +22,7 @@ func TestCreateRandomAmount(t *testing.T) {
 
 	contentSrc := strings.NewReader("icecream")
 
-	testRunner := NewRunner(contentSrc, tempDir, "1MB", "%d.dat", 15, true)
+	testRunner := NewRunner(contentSrc, tempDir, "1MB", "%d.dat", 15, true, "zero")
 
 	err := Mk(testRunner)
 	if err != nil {
@@ -34,7 +34,7 @@ func TestNewRunner(t *testing.T) {
 	log.Println("\n\nStarting TestNewRunner...")
 
 	testReader := strings.NewReader("foobarbaz")
-	testRunner := NewRunner(testReader, tempDir, "2MB", "%d.dat", 3, false)
+	testRunner := NewRunner(testReader, tempDir, "2MB", "%d.dat", 3, false, "zero")
 
 	fmtString := "Given Runner field %s not equal to the given test value."
 	var value string
@@ -71,7 +71,7 @@ func TestMk(t *testing.T) {
 	log.Println("\n\nStarting TestMk...")
 
 	testReader := strings.NewReader("helloWorld")
-	testRunner := NewRunner(testReader, tempDir, "2MB", "%d.dat", 5, false)
+	testRunner := NewRunner(testReader, tempDir, "2MB", "%d.dat", 5, false, "zero")
 
 	err := Mk(testRunner)
 	if err != nil {
