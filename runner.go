@@ -44,18 +44,25 @@ func NewRunner(src io.Reader, dst, unit, fmtStr string, amnt int, random bool, i
 // Mk receives an instance of a Runner and creates blobs based on its attributes.
 func Mk(r *Runner) error {
 	// Error handling and detection should be done here.
-
 	err := r.validateFields()
 	if err != nil {
 		return err
 	}
 
-	srcContent, err := ioutil.ReadAll(r.Src)
+	// Fill content based on the mode and unit.
+	/*	srcContent, err := ioutil.ReadAll(r.Src)
+		if err != nil {
+			return err
+		}
+		r.Content = srcContent*/
+
+	srcContent, err := r.getContent()
 	if err != nil {
 		return err
 	}
 	r.Content = srcContent
 
+	// Determine the number of blobs to be made. Takes the random flag into account.
 	amount := r.setBlobAmount()
 
 	log.Printf("Creating blobs.")
@@ -198,4 +205,40 @@ func (r *Runner) setBlobAmount() int {
 	}
 
 	return amount
+}
+
+func (r *Runner) getContent() ([]byte, error) {
+	var content []byte
+
+	switch r.InputType {
+	case "zero":
+		content = []byte{0}
+
+	case "random":
+		// Make a byte slize as large as the unit.
+		byteAmount, err := humanize.ParseBigBytes(r.Unit)
+		if err != nil {
+			return nil, err
+		}
+
+		byteContent := make([]byte, (*byteAmount).Int64())
+
+		randomizer := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+		if _, err := randomizer.Read(byteContent); err != nil {
+			return nil, err
+		}
+
+		content = byteContent
+
+	case "stdin":
+		byteContent, err := ioutil.ReadAll(r.Src)
+		if err != nil {
+			return nil, err
+		}
+
+		content = byteContent
+	}
+
+	return content, nil
 }
