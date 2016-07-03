@@ -36,6 +36,7 @@ func NewRunner(src io.Reader, dst, unit, fmtStr string, amnt int, random bool, i
 	r.Unit = unit
 	r.FormatStr = fmtStr
 	r.Random = random
+	r.InputType = inputType
 
 	return r
 }
