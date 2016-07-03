@@ -11,19 +11,19 @@ import (
 // Dest = destination of blobs.
 func (r *Runner) validateFields() error {
 	if err := unitFieldInvalid(r.Unit); err != nil {
-		return errors.New("Invalid unit field. Must contain a number and a valid data unit. Ex. `1MB`.")
+		return errors.New("Invalid unit field. Must contain a number and a valid data unit. Ex. `1MB`")
 	}
 
 	if inputTypeFieldInvalid(r.InputType) {
-		return errors.New("Invalid input-type field value. See usage info.")
+		return errors.New("Invalid input-type field value. See usage info")
 	}
 
 	if amountFieldInvalid(r.Amount) {
-		return errors.New(fmt.Sprintf("amount field value invalid. Must be at least 1."))
+		return fmt.Errorf("amount field value invalid. Must be at least 1")
 	}
 
 	if err := destFieldInvalid(r.Dest); err != nil {
-		return errors.New(fmt.Sprintf("dest field invalid: %v", err))
+		return fmt.Errord("dest field invalid: %v", err)
 	}
 
 	/* Don't handle stdin yet
