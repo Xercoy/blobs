@@ -6,6 +6,7 @@
 [![GoDoc](https://godoc.org/github.com/xercoy/blobs?status.png)](http://godoc.org/github.com/xercoy/blobs)
 [![Coverage Status](https://coveralls.io/repos/github/Xercoy/blobs/badge.svg?branch=master)](https://coveralls.io/github/Xercoy/blobs?branch=master)
 [![Gitter](https://badges.gitter.im/Xercoy/blobs.svg)](https://gitter.im/Xercoy/blobs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Go Report Card](https://goreportcard.com/badge/github.com/xercoy/blobs)](https://goreportcard.com/report/github.com/xercoy/blobs)
 
 Use Blobs to create files of various sizes in bytes, kilobytes, megabytes, gigabytes, and terabytes.
 
