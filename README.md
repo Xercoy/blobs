@@ -13,6 +13,22 @@ Use Blobs to create files of various sizes in bytes, megabytes, gigabytes, and t
 
 # Sample Usage
 
+Creating blobs can be very simple or very specific.
+
+Create a 1MB file named 1.dat in the current directory with all 0s
+```
+blobs
+```
+
+Create a 10MB file named 1.dat in the current directory with all random characters.
+```
+blobs --unit="10MB" --input-type="random"
+```
+
+Create two 20MB files named `1.txt` and `2.txt` in another directory with repeated content from stdin:
+```
+echo "foobarbaz" | blobs --unit="20MB" --amount=2 --dest="./scratch" --input-type="stdin" --o="%d.txt"
+```
 
 
 # Usage
