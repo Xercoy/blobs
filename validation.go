@@ -23,7 +23,7 @@ func (r *Runner) validateFields() error {
 	}
 
 	if err := destFieldInvalid(r.Dest); err != nil {
-		return fmt.Errord("dest field invalid: %v", err)
+		return fmt.Errorf("dest field invalid: %v", err)
 	}
 
 	/* Don't handle stdin yet

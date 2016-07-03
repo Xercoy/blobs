@@ -8,11 +8,9 @@
 [![Gitter](https://badges.gitter.im/Xercoy/blobs.svg)](https://gitter.im/Xercoy/blobs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Go Report Card](https://goreportcard.com/badge/github.com/xercoy/blobs)](https://goreportcard.com/report/github.com/xercoy/blobs)
 
-Use Blobs to create files of various sizes in bytes, kilobytes, megabytes, gigabytes, and terabytes.
-
 # Sample Usage
 
-**Creating blobs can be very simple or very specific.**
+Use Blobs to create files of various sizes in bytes, kilobytes, megabytes, and gigabytes. The next few examples demonstrate just how simple or specific creating blobs can be.
 
 Create a 1MB file named 1.dat in the current directory with all 0s.
 ```
