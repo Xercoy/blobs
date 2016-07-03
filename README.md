@@ -11,6 +11,10 @@
 
 Use Blobs to create files of various sizes in bytes, megabytes, gigabytes, and terabytes.
 
+# Sample Usage
+
+
+
 # Usage
 ```
 Blobs 1.0

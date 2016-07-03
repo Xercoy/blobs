@@ -1,7 +1,6 @@
 package blobs
 
 import (
-	"errors"
 	"fmt"
 	"github.com/dustin/go-humanize"
 	"io"
@@ -23,11 +22,12 @@ type Runner struct {
 	FormatStr string
 	Content   []byte
 	Random    bool
+	InputType string
 }
 
 // NewRunner returns a pointer to a Runner and initializes most of the fields
 // with the given args.
-func NewRunner(src io.Reader, dst, unit, fmtStr string, amnt int, random bool) *Runner {
+func NewRunner(src io.Reader, dst, unit, fmtStr string, amnt int, random bool, inputType string) *Runner {
 	r := new(Runner)
 
 	r.Src = src
@@ -43,6 +43,12 @@ func NewRunner(src io.Reader, dst, unit, fmtStr string, amnt int, random bool) *
 // Mk receives an instance of a Runner and creates blobs based on its attributes.
 func Mk(r *Runner) error {
 	// Error handling and detection should be done here.
+
+	err := r.validateFields()
+	if err != nil {
+		return err
+	}
+
 	srcContent, err := ioutil.ReadAll(r.Src)
 	if err != nil {
 		return err
@@ -68,7 +74,6 @@ func Mk(r *Runner) error {
 			log.Printf("Creating file #%d of %d (%s)...\n", index, amount, fileName)
 			err := r.createBlob(fileName)
 			if err != nil {
-				err = errors.New("eofihefihsd")
 				errChan <- err
 			}
 
